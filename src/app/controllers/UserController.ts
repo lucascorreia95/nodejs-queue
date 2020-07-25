@@ -1,14 +1,10 @@
 import { Request, Response } from 'express';
 import Queue from '../lib/Queue';
 
-type ReqBody = {
-  name: string;
-  email: string;
-  password: string;
-};
+import { User } from '../types';
 
 export default {
-  async store(req: Request<{}, {}, ReqBody>, res: Response) {
+  async store(req: Request<{}, {}, User>, res: Response) {
     const { name, email, password } = req.body;
 
     const user = {
@@ -17,7 +13,7 @@ export default {
       password,
     };
 
-    await Queue.add('RegistrationMail', { user });
+    await Queue.add('RegistrationMail', { data: { user } });
 
     return res.json(user);
   },

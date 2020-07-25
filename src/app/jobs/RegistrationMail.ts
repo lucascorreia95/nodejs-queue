@@ -1,16 +1,5 @@
 import Mail from '../lib/Mail';
-
-type User = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-type HandleData = {
-  data: {
-    user: User;
-  };
-};
+import { HandleData } from '../types';
 
 export default {
   key: 'RegistrationMail',

@@ -1,17 +1,8 @@
 import Queue, { QueueOptions } from 'bull';
+
 import redisConfig from '../../config/redis';
-
 import * as Jobs from '../jobs';
-
-type User = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-type HandleData = {
-  user: User;
-};
+import { HandleData } from '../types';
 
 const queues = Object.values(Jobs).map((job) => ({
   bull: new Queue(job.key, redisConfig as QueueOptions),
@@ -21,7 +12,7 @@ const queues = Object.values(Jobs).map((job) => ({
 
 export default {
   queues,
-  add(name: string, data: HandleData) {
+  add(name: string, { data }: HandleData) {
     const queue = this.queues.find((item) => item.name === name);
 
     return queue?.bull.add(data);
