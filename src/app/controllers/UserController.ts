@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-
-import Mail from '../lib/Mail';
+import Queue from '../lib/Queue';
 
 type ReqBody = {
   name: string;
@@ -18,12 +17,7 @@ export default {
       password,
     };
 
-    await Mail.sendMail({
-      from: 'Queue test <queue@queuetest.com.br>',
-      to: `${name} <${email}>`,
-      subject: 'Cadastro de usuário',
-      html: `Olá ${name}, bem-vindo ao sistema de filas!`,
-    });
+    await Queue.add('RegistrationMail', { user });
 
     return res.json(user);
   },
